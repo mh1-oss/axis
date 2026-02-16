@@ -37,7 +37,7 @@ create table public.projects (
 -- PRODUCTS (Catalog)
 create table public.products (
   id uuid default uuid_generate_v4() primary key,
-  name text not null,
+  title text not null,
   description text,
   image_url text,
   category text,

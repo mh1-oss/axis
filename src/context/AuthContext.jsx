@@ -1,34 +1,50 @@
 import { createContext, useContext, useState, useEffect } from 'react';
+import { supabase } from '../supabase';
 
 const AuthContext = createContext(null);
 
-const ADMIN_EMAIL = 'admin@axis.com';
-const ADMIN_PASSWORD = 'axis2024';
-
 export function AuthProvider({ children }) {
-    const [isAuthenticated, setIsAuthenticated] = useState(() => {
-        return localStorage.getItem('axis_admin_auth') === 'true';
-    });
+    const [isAuthenticated, setIsAuthenticated] = useState(false);
+    const [user, setUser] = useState(null);
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        localStorage.setItem('axis_admin_auth', isAuthenticated.toString());
-    }, [isAuthenticated]);
+        // Check active session
+        supabase.auth.getSession().then(({ data: { session } }) => {
+            setUser(session?.user ?? null);
+            setIsAuthenticated(!!session);
+            setLoading(false);
+        });
 
-    const login = (email, password) => {
-        if (email === ADMIN_EMAIL && password === ADMIN_PASSWORD) {
-            setIsAuthenticated(true);
-            return true;
+        // Listen for changes
+        const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+            setUser(session?.user ?? null);
+            setIsAuthenticated(!!session);
+            setLoading(false);
+        });
+
+        return () => subscription.unsubscribe();
+    }, []);
+
+    const login = async (email, password) => {
+        const { data, error } = await supabase.auth.signInWithPassword({
+            email,
+            password,
+        });
+
+        if (error) {
+            console.error('Login error:', error.message);
+            return false;
         }
-        return false;
+        return true;
     };
 
-    const logout = () => {
-        setIsAuthenticated(false);
-        localStorage.removeItem('axis_admin_auth');
+    const logout = async () => {
+        await supabase.auth.signOut();
     };
 
     return (
-        <AuthContext.Provider value={{ isAuthenticated, login, logout }}>
+        <AuthContext.Provider value={{ isAuthenticated, user, login, logout, loading }}>
             {children}
         </AuthContext.Provider>
     );

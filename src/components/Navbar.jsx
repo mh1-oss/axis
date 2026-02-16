@@ -109,7 +109,7 @@ export default function Navbar() {
 
             {/* Mobile Menu */}
             {mobileOpen && (
-                <div className="md:hidden bg-surface-light dark:bg-surface-dark border-t border-border-light dark:border-border-dark pb-4 animate-in slide-in-from-top">
+                <div className="md:hidden fixed inset-x-0 top-20 bg-surface-light dark:bg-surface-dark border-t border-border-light dark:border-border-dark pb-4 animate-in slide-in-from-top shadow-xl z-40">
                     <div className="px-4 pt-2 space-y-1">
                         {links.map(link => (
                             <Link

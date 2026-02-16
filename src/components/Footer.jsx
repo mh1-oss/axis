@@ -71,7 +71,7 @@ export default function Footer() {
                 </div>
 
                 <div className="border-t border-gray-800 pt-8 text-center md:text-left flex flex-col md:flex-row justify-between items-center">
-                    <p className="text-xs text-gray-500 uppercase tracking-widest">© 2024 Axis Aluminum. All rights reserved.</p>
+                    <p className="text-xs text-gray-500 uppercase tracking-widest">© 2026 Axis Aluminum. All rights reserved.</p>
                     <p className="text-xs text-gray-600 mt-2 md:mt-0 font-display">BEYOND THE FRAME</p>
                 </div>
             </div>

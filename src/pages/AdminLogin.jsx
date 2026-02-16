@@ -20,12 +20,17 @@ export default function AdminLogin() {
         setError('');
         setLoading(true);
 
-        setTimeout(() => {
-            const success = login(email, password);
+        // Small delay for UX, then login
+        setTimeout(async () => {
+            const success = await login(email, password);
             if (success) {
+                // Navigation handled by the useEffect or ProtectedRoute, 
+                // but explicit navigate here is also fine if state updates fast enough.
+                // Better to let the state change trigger the redirect in the component body
+                // or just navigate here for safety.
                 navigate('/admin', { replace: true });
             } else {
-                setError('Invalid email or password. Please try again.');
+                setError('Invalid email or password.');
             }
             setLoading(false);
         }, 600);

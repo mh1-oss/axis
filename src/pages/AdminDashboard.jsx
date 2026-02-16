@@ -3,8 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { usePosts } from '../context/PostsContext';
 
-const EMPTY_PROJECT = { title: '', category: 'Commercial', location: '', image: '', description: '' };
-const EMPTY_PRODUCT = { title: '', category: 'Residential', image: '', description: '' };
+const EMPTY_PROJECT = { title: '', category: 'Commercial', location: '', image_url: '', description: '' };
+const EMPTY_PRODUCT = { title: '', category: 'Residential', image_url: '', description: '' };
 
 export default function AdminDashboard() {
     const { logout } = useAuth();
@@ -58,16 +58,25 @@ export default function AdminDashboard() {
         setDeleteConfirm(null);
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
+        let result;
+
         if (editingId) {
-            if (isProjects) updateProject(editingId, formData);
-            else updateProduct(editingId, formData);
+            if (isProjects) result = await updateProject(editingId, formData);
+            else result = await updateProduct(editingId, formData);
         } else {
-            if (isProjects) addProject(formData);
-            else addProduct(formData);
+            if (isProjects) result = await addProject(formData);
+            else result = await addProduct(formData);
         }
-        resetForm();
+
+        if (result.success) {
+            resetForm();
+            alert(editingId ? 'Item updated successfully' : 'Item added successfully');
+        } else {
+            alert('Error: ' + result.error);
+            console.error('Operation failed:', result.error);
+        }
     };
 
     const projectCategories = ['Commercial', 'Residential', 'Industrial'];
@@ -115,8 +124,8 @@ export default function AdminDashboard() {
                         <button
                             onClick={() => handleTabSwitch('projects')}
                             className={`px-6 py-2.5 rounded-md text-sm font-medium transition-all ${isProjects
-                                    ? 'bg-primary text-white shadow-sm'
-                                    : 'text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white'
+                                ? 'bg-primary text-white shadow-sm'
+                                : 'text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white'
                                 }`}
                         >
                             <span className="material-icons-outlined text-lg align-middle mr-1">photo_library</span>
@@ -125,8 +134,8 @@ export default function AdminDashboard() {
                         <button
                             onClick={() => handleTabSwitch('products')}
                             className={`px-6 py-2.5 rounded-md text-sm font-medium transition-all ${!isProjects
-                                    ? 'bg-primary text-white shadow-sm'
-                                    : 'text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white'
+                                ? 'bg-primary text-white shadow-sm'
+                                : 'text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white'
                                 }`}
                         >
                             <span className="material-icons-outlined text-lg align-middle mr-1">inventory_2</span>
@@ -195,8 +204,8 @@ export default function AdminDashboard() {
                                     <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Image URL</label>
                                     <input
                                         type="url"
-                                        value={formData.image}
-                                        onChange={(e) => setFormData({ ...formData, image: e.target.value })}
+                                        value={formData.image_url}
+                                        onChange={(e) => setFormData({ ...formData, image_url: e.target.value })}
                                         className="w-full px-4 py-2.5 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-primary focus:border-primary text-sm"
                                         placeholder="https://example.com/image.jpg"
                                     />
@@ -249,8 +258,8 @@ export default function AdminDashboard() {
                                     <tr key={item.id} className="hover:bg-gray-50 dark:hover:bg-gray-700/30 transition-colors">
                                         <td className="px-6 py-4">
                                             <div className="w-16 h-12 rounded overflow-hidden bg-gray-100 dark:bg-gray-700">
-                                                {item.image && (
-                                                    <img src={item.image} alt={item.title} className="w-full h-full object-cover" />
+                                                {item.image_url && (
+                                                    <img src={item.image_url} alt={item.title} className="w-full h-full object-cover" />
                                                 )}
                                             </div>
                                         </td>
@@ -260,9 +269,9 @@ export default function AdminDashboard() {
                                         </td>
                                         <td className="px-6 py-4">
                                             <span className={`inline-flex px-2.5 py-1 rounded-full text-xs font-medium ${item.category === 'Commercial' ? 'bg-blue-50 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300' :
-                                                    item.category === 'Residential' ? 'bg-green-50 text-green-700 dark:bg-green-900/30 dark:text-green-300' :
-                                                        item.category === 'Industrial' ? 'bg-orange-50 text-orange-700 dark:bg-orange-900/30 dark:text-orange-300' :
-                                                            'bg-purple-50 text-purple-700 dark:bg-purple-900/30 dark:text-purple-300'
+                                                item.category === 'Residential' ? 'bg-green-50 text-green-700 dark:bg-green-900/30 dark:text-green-300' :
+                                                    item.category === 'Industrial' ? 'bg-orange-50 text-orange-700 dark:bg-orange-900/30 dark:text-orange-300' :
+                                                        'bg-purple-50 text-purple-700 dark:bg-purple-900/30 dark:text-purple-300'
                                                 }`}>
                                                 {item.category}
                                             </span>
