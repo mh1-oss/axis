@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Navigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 
 export default function AdminLogin() {
@@ -12,8 +12,7 @@ export default function AdminLogin() {
 
     // If already authenticated, redirect
     if (isAuthenticated) {
-        navigate('/admin', { replace: true });
-        return null;
+        return <Navigate to="/admin" replace />;
     }
 
     const handleSubmit = (e) => {
