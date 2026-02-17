@@ -103,10 +103,16 @@ export default function ProductDetails() {
                                 <span className="material-icons-outlined">email</span>
                                 {t('inquire')}
                             </button>
-                            <button className="flex-1 border border-gray-300 dark:border-gray-600 hover:border-secondary dark:hover:border-white text-gray-700 dark:text-gray-300 hover:text-secondary dark:hover:text-white px-8 py-4 rounded-md font-bold uppercase tracking-wider text-sm transition-all flex items-center justify-center gap-2">
+                            <a
+                                href={product.catalog_url}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className={`flex-1 border border-gray-300 dark:border-gray-600 px-8 py-4 rounded-md font-bold uppercase tracking-wider text-sm transition-all flex items-center justify-center gap-2 ${product.catalog_url ? 'hover:border-secondary dark:hover:border-white text-gray-700 dark:text-gray-300 hover:text-secondary dark:hover:text-white cursor-pointer' : 'opacity-50 cursor-not-allowed'}`}
+                                onClick={(e) => !product.catalog_url && e.preventDefault()}
+                            >
                                 <span className="material-icons-outlined">picture_as_pdf</span>
                                 {language === 'ar' ? 'تحميل الكتالوج' : 'Download Catalog'}
-                            </button>
+                            </a>
                         </div>
                     </div>
                 </div>

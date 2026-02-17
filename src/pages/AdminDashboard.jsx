@@ -3,8 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { usePosts } from '../context/PostsContext';
 
-const EMPTY_PROJECT = { title: '', category: 'Commercial', location: '', image_url: '', description: '' };
-const EMPTY_PRODUCT = { title: '', category: 'Residential', image_url: '', description: '' };
+const EMPTY_PROJECT = { title: '', category: 'Commercial', location: '', image_url: '', description: '', catalog_url: '' };
+const EMPTY_PRODUCT = { title: '', category: 'Residential', image_url: '', description: '', catalog_url: '' };
 
 export default function AdminDashboard() {
     const { logout } = useAuth();
@@ -208,6 +208,16 @@ export default function AdminDashboard() {
                                         onChange={(e) => setFormData({ ...formData, image_url: e.target.value })}
                                         className="w-full px-4 py-2.5 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-primary focus:border-primary text-sm"
                                         placeholder="https://example.com/image.jpg"
+                                    />
+                                </div>
+                                <div className="md:col-span-2">
+                                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Catalog/PDF URL</label>
+                                    <input
+                                        type="url"
+                                        value={formData.catalog_url || ''}
+                                        onChange={(e) => setFormData({ ...formData, catalog_url: e.target.value })}
+                                        className="w-full px-4 py-2.5 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-primary focus:border-primary text-sm"
+                                        placeholder="https://example.com/catalog.pdf"
                                     />
                                 </div>
                             </div>

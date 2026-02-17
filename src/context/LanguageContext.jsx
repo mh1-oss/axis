@@ -124,9 +124,9 @@ export function LanguageProvider({ children }) {
                 customFab: 'تصنيع مخصص',
                 customFabDesc: 'حلول ألمنيوم مخصصة مصممة حسب المتطلبات المعمارية والتصاميم الفريدة.',
                 details: 'التفاصيل',
-                // Projects Page
-                ourProjects: 'مشاريعنا',
-                projectsTitle: 'المشاريع',
+                // Projects Page (Updated)
+                ourProjects: '',
+                projectsTitle: 'مشاريعنا',
                 projectsSubtitle: 'استكشف محفظتنا من تصنيع الألمنيوم المتطور. من ناطحات السحاب الشاهقة إلى الفلل السكنية المخصصة، نحن نتجاوز الإطار.',
                 allProjects: 'كل المشاريع',
                 commercial: 'تجاري',
@@ -165,7 +165,8 @@ export function LanguageProvider({ children }) {
                 aboutUsDesc: 'تعتبر أكسيس للألمنيوم شركة رائدة في مجال حلول الألمنيوم المعماري. مع أكثر من 20 عاماً من الخبرة، نختص في تحويل الآفاق من خلال الهندسة الدقيقة والتصميم المبتكر. التزامنا بالجودة والاستدامة يجعلنا الشريك المفضل للمشاريع التجارية والسكنية على حد سواء.'
             }
         };
-        return translations[language][key] || key;
+        const val = translations[language][key];
+        return val !== undefined ? val : key;
     };
 
     return (
