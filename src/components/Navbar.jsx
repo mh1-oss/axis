@@ -62,21 +62,24 @@ export default function Navbar() {
                     </div>
 
                     {/* Desktop Actions */}
-                    <div className="hidden md:flex items-center space-x-4 rtl:space-x-reverse">
+                    <div className="hidden md:flex items-center space-x-2 rtl:space-x-reverse">
                         <button
                             onClick={toggleLanguage}
-                            className="p-2 rounded-full text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white transition-colors font-bold text-sm uppercase"
+                            className="w-10 h-10 flex items-center justify-center rounded-full text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-800 transition-all font-bold text-sm uppercase"
+                            title={language === 'en' ? 'Switch to Arabic' : 'Switch to English'}
                         >
                             {language === 'en' ? 'AR' : 'EN'}
                         </button>
                         <button
                             onClick={toggleTheme}
-                            className="p-2 rounded-full text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white transition-colors"
+                            className="w-10 h-10 flex items-center justify-center rounded-full text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-800 transition-all"
+                            title={isDark ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
                         >
                             <span className="material-icons-outlined text-xl">
                                 {isDark ? 'light_mode' : 'dark_mode'}
                             </span>
                         </button>
+                        <div className="w-4"></div> {/* Spacer */}
                         <Link
                             to="/contact"
                             className="bg-primary hover:bg-red-700 text-white px-6 py-2.5 rounded-sm font-bold uppercase tracking-wider text-sm transition-all transform hover:-translate-y-0.5 shadow-lg shadow-red-500/30"
@@ -89,13 +92,13 @@ export default function Navbar() {
                     <div className="md:hidden flex items-center gap-2">
                         <button
                             onClick={toggleLanguage}
-                            className="p-2 rounded-full text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white transition-colors font-bold text-sm uppercase"
+                            className="w-10 h-10 flex items-center justify-center rounded-full text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-800 transition-all font-bold text-sm uppercase"
                         >
                             {language === 'en' ? 'AR' : 'EN'}
                         </button>
                         <button
                             onClick={toggleTheme}
-                            className="p-2 rounded-full text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white transition-colors"
+                            className="w-10 h-10 flex items-center justify-center rounded-full text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-800 transition-all"
                         >
                             <span className="material-icons-outlined text-xl">
                                 {isDark ? 'light_mode' : 'dark_mode'}
@@ -103,7 +106,7 @@ export default function Navbar() {
                         </button>
                         <button
                             onClick={() => setMobileOpen(!mobileOpen)}
-                            className="text-gray-700 dark:text-gray-300 hover:text-primary focus:outline-none"
+                            className="w-10 h-10 flex items-center justify-center rounded-full text-gray-700 dark:text-gray-300 hover:text-primary hover:bg-gray-100 dark:hover:bg-gray-800 transition-all focus:outline-none"
                         >
                             <span className="material-icons-outlined text-3xl">
                                 {mobileOpen ? 'close' : 'menu'}
@@ -120,7 +123,7 @@ export default function Navbar() {
                         initial={{ opacity: 0, height: 0 }}
                         animate={{ opacity: 1, height: 'auto' }}
                         exit={{ opacity: 0, height: 0 }}
-                        className="md:hidden fixed inset-x-0 top-20 bg-surface-light dark:bg-surface-dark border-t border-border-light dark:border-border-dark shadow-xl z-40 overflow-hidden"
+                        className="md:hidden fixed inset-x-0 top-20 bg-surface-light dark:bg-surface-dark border-t border-border-light dark:border-border-dark shadow-xl z-40 overflow-hidden max-h-[calc(100vh-5rem)] overflow-y-auto"
                     >
                         <div className="px-4 py-4 space-y-1">
                             {links.map(link => (
@@ -141,7 +144,7 @@ export default function Navbar() {
                                 onClick={() => setMobileOpen(false)}
                                 className="block mt-4 text-center bg-primary hover:bg-red-700 text-white px-6 py-3 rounded font-bold uppercase tracking-wider text-sm transition-all"
                             >
-                                Get a Quote
+                                {t('getQuote')}
                             </Link>
                         </div>
                     </motion.div>
