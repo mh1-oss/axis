@@ -24,7 +24,7 @@ export default function Home() {
                     />
                     <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/50 to-black/60" />
                 </div>
-                <div className="relative z-10 text-center px-4 max-w-5xl mx-auto">
+                <div className="relative z-10 text-center px-4 max-w-5xl mx-auto safe-padding-x">
                     <h2 className="text-primary font-bold tracking-[0.2em] uppercase text-sm md:text-lg mb-4">
                         Axis Aluminum
                     </h2>
