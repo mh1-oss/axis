@@ -93,7 +93,17 @@ export function LanguageProvider({ children }) {
                 johnDoe: 'John Doe',
                 howCanWeHelp: 'How can we help you?',
                 aboutUsTitle: 'Who We Are',
-                aboutUsDesc: 'Axis Aluminum is a leading provider of architectural aluminum solutions. With over 20 years of experience, we specialize in transforming skylines through precision engineering and innovative design. Our commitment to quality and sustainability makes us the preferred partner for commercial and residential projects alike.'
+                aboutUsDesc: 'Axis Aluminum is a leading provider of architectural aluminum solutions. With over 20 years of experience, we specialize in transforming skylines through precision engineering and innovative design. Our commitment to quality and sustainability makes us the preferred partner for commercial and residential projects alike.',
+                // Why Choose Us
+                whyChooseUs: 'Why Choose Axis?',
+                qualityTitle: 'Premium Quality',
+                qualityDesc: 'We use only the highest grade aluminum and glass for durability and long-term performance.',
+                designTitle: 'Modern Design',
+                designDesc: 'Sleek, contemporary aesthetics that elevate any architectural vision with a touch of luxury.',
+                executionTitle: 'Fast Execution',
+                executionDesc: 'Efficient project management and advanced installation techniques ensuring timely delivery.',
+                supportTitle: 'Warranty & Support',
+                supportDesc: 'Comprehensive warranty on all our products with dedicated after-sales support.'
             },
             ar: {
                 home: 'الرئيسية',
@@ -162,7 +172,17 @@ export function LanguageProvider({ children }) {
                 johnDoe: 'الاسم',
                 howCanWeHelp: 'كيف يمكننا مساعدتك؟',
                 aboutUsTitle: 'من نحن',
-                aboutUsDesc: 'تعتبر أكسيس للألمنيوم شركة رائدة في مجال حلول الألمنيوم المعماري. مع أكثر من 20 عاماً من الخبرة، نختص في تحويل الآفاق من خلال الهندسة الدقيقة والتصميم المبتكر. التزامنا بالجودة والاستدامة يجعلنا الشريك المفضل للمشاريع التجارية والسكنية على حد سواء.'
+                aboutUsDesc: 'تعتبر أكسيس للألمنيوم شركة رائدة في مجال حلول الألمنيوم المعماري. مع أكثر من 20 عاماً من الخبرة، نختص في تحويل الآفاق من خلال الهندسة الدقيقة والتصميم المبتكر. التزامنا بالجودة والاستدامة يجعلنا الشريك المفضل للمشاريع التجارية والسكنية على حد سواء.',
+                // Why Choose Us
+                whyChooseUs: 'لماذا تختار أكسيس؟',
+                qualityTitle: 'جودة عالية',
+                qualityDesc: 'نستخدم أجود أنواع الألمنيوم والزجاج لضمان المتانة والأداء الطويل الأمد.',
+                designTitle: 'تصميم عصري',
+                designDesc: 'جماليات عصرية وأنيقة ترتقي بأي رؤية معمارية وتضيف لمسة فخامة.',
+                executionTitle: 'سرعة التنفيذ',
+                executionDesc: 'إدارة مشاريع فعالة وتقنيات تركيب متطورة تضمن التسليم في الوقت المحدد.',
+                supportTitle: 'ضمان ودعم',
+                supportDesc: 'ضمان شامل على جميع منتجاتنا مع خدمة دعم مخصصة لما بعد البيع.'
             }
         };
         const val = translations[language][key];

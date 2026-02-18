@@ -114,18 +114,25 @@ export default function Home() {
             </section>
 
             {/* Stats */}
-            <section className="py-16 bg-surface-light dark:bg-surface-dark border-t border-border-light dark:border-border-dark">
+            {/* Why Choose Us */}
+            <section className="py-20 bg-surface-light dark:bg-surface-dark border-t border-border-light dark:border-border-dark">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center divide-x divide-gray-200 dark:divide-gray-800 rtl:divide-x-reverse">
+                    <div className="text-center mb-12">
+                        <span className="text-primary font-bold tracking-widest uppercase text-sm">{t('whyChooseUs')}</span>
+                    </div>
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 text-center divide-y md:divide-y-0 md:divide-x divide-gray-200 dark:divide-gray-800 rtl:divide-x-reverse">
                         {[
-                            { value: '25+', label: t('yearsExp') },
-                            { value: '500+', label: t('projectsComp') },
-                            { value: '100%', label: t('satisfaction') },
-                            { value: '50', label: t('teamMembers') },
-                        ].map(stat => (
-                            <div key={stat.label} className="p-4">
-                                <div className="text-4xl font-display font-bold text-gray-900 dark:text-white mb-2">{stat.value}</div>
-                                <div className="text-xs uppercase tracking-widest text-gray-500">{stat.label}</div>
+                            { icon: 'verified', title: t('qualityTitle'), desc: t('qualityDesc') },
+                            { icon: 'auto_awesome', title: t('designTitle'), desc: t('designDesc') },
+                            { icon: 'speed', title: t('executionTitle'), desc: t('executionDesc') },
+                            { icon: 'support_agent', title: t('supportTitle'), desc: t('supportDesc') },
+                        ].map((feature, index) => (
+                            <div key={index} className="px-4 py-8 md:py-0 flex flex-col items-center">
+                                <div className="text-primary mb-4">
+                                    <span className="material-icons-outlined text-5xl">{feature.icon}</span>
+                                </div>
+                                <h3 className="text-xl font-display font-bold text-gray-900 dark:text-white mb-2 uppercase tracking-wide">{feature.title}</h3>
+                                <p className="text-gray-500 dark:text-gray-400 text-sm leading-relaxed max-w-xs">{feature.desc}</p>
                             </div>
                         ))}
                     </div>

@@ -2,6 +2,7 @@ import { useParams, useNavigate, Link } from 'react-router-dom';
 import { usePosts } from '../context/PostsContext';
 import { useLanguage } from '../context/LanguageContext';
 import { useEffect, useState } from 'react';
+import { motion } from 'framer-motion';
 
 export default function ProductDetails() {
     const { id } = useParams();
@@ -55,7 +56,8 @@ export default function ProductDetails() {
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
                     {/* Image Section */}
                     <div className="relative rounded-lg overflow-hidden shadow-xl h-96 lg:h-[500px]">
-                        <img
+                        <motion.img
+                            layoutId={`product-image-${product.id}`}
                             src={product.image_url}
                             alt={product.title}
                             className="w-full h-full object-cover"

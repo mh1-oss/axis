@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useTheme } from '../context/ThemeContext';
 import { useLanguage } from '../context/LanguageContext';
+import { motion, AnimatePresence } from 'framer-motion';
 
 export default function Navbar() {
     const location = useLocation();
@@ -19,7 +20,12 @@ export default function Navbar() {
     const isActive = (path) => location.pathname === path;
 
     return (
-        <nav className="sticky top-0 z-50 bg-surface-light/95 dark:bg-surface-dark/95 backdrop-blur-md border-b border-border-light dark:border-border-dark transition-colors duration-300">
+        <motion.nav
+            initial={{ y: -100 }}
+            animate={{ y: 0 }}
+            transition={{ duration: 0.8, ease: "easeInOut" }}
+            className="sticky top-0 z-50 bg-surface-light/95 dark:bg-surface-dark/95 backdrop-blur-md border-b border-border-light dark:border-border-dark transition-colors duration-300"
+        >
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="flex justify-between h-20 items-center">
                     {/* Logo */}
@@ -108,32 +114,39 @@ export default function Navbar() {
             </div>
 
             {/* Mobile Menu */}
-            {mobileOpen && (
-                <div className="md:hidden fixed inset-x-0 top-20 bg-surface-light dark:bg-surface-dark border-t border-border-light dark:border-border-dark pb-4 animate-in slide-in-from-top shadow-xl z-40">
-                    <div className="px-4 pt-2 space-y-1">
-                        {links.map(link => (
+            <AnimatePresence>
+                {mobileOpen && (
+                    <motion.div
+                        initial={{ opacity: 0, height: 0 }}
+                        animate={{ opacity: 1, height: 'auto' }}
+                        exit={{ opacity: 0, height: 0 }}
+                        className="md:hidden fixed inset-x-0 top-20 bg-surface-light dark:bg-surface-dark border-t border-border-light dark:border-border-dark shadow-xl z-40 overflow-hidden"
+                    >
+                        <div className="px-4 py-4 space-y-1">
+                            {links.map(link => (
+                                <Link
+                                    key={link.to}
+                                    to={link.to}
+                                    onClick={() => setMobileOpen(false)}
+                                    className={`block py-3 px-4 text-sm font-semibold uppercase tracking-wider rounded transition-colors ${isActive(link.to)
+                                        ? 'text-primary bg-red-50 dark:bg-red-900/20'
+                                        : 'text-gray-700 dark:text-gray-300 hover:text-primary hover:bg-gray-50 dark:hover:bg-gray-800'
+                                        }`}
+                                >
+                                    {link.label}
+                                </Link>
+                            ))}
                             <Link
-                                key={link.to}
-                                to={link.to}
+                                to="/contact"
                                 onClick={() => setMobileOpen(false)}
-                                className={`block py-3 px-4 text-sm font-semibold uppercase tracking-wider rounded transition-colors ${isActive(link.to)
-                                    ? 'text-primary bg-red-50 dark:bg-red-900/20'
-                                    : 'text-gray-700 dark:text-gray-300 hover:text-primary hover:bg-gray-50 dark:hover:bg-gray-800'
-                                    }`}
+                                className="block mt-4 text-center bg-primary hover:bg-red-700 text-white px-6 py-3 rounded font-bold uppercase tracking-wider text-sm transition-all"
                             >
-                                {link.label}
+                                Get a Quote
                             </Link>
-                        ))}
-                        <Link
-                            to="/contact"
-                            onClick={() => setMobileOpen(false)}
-                            className="block mt-4 text-center bg-primary hover:bg-red-700 text-white px-6 py-3 rounded font-bold uppercase tracking-wider text-sm transition-all"
-                        >
-                            Get a Quote
-                        </Link>
-                    </div>
-                </div>
-            )}
-        </nav>
+                        </div>
+                    </motion.div>
+                )}
+            </AnimatePresence>
+        </motion.nav>
     );
 }

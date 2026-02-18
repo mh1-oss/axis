@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { usePosts } from '../context/PostsContext';
 import { useLanguage } from '../context/LanguageContext';
+import { motion } from 'framer-motion';
 
 export default function Products() {
     const { products } = usePosts();
@@ -89,7 +90,8 @@ export default function Products() {
                     {filteredProducts.map(product => (
                         <div key={product.id} className="group bg-card-light dark:bg-card-dark rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100 dark:border-gray-800 flex flex-col h-full">
                             <Link to={`/products/${product.id}`} className="relative h-64 overflow-hidden block">
-                                <img
+                                <motion.img
+                                    layoutId={`product-image-${product.id}`}
                                     alt={product.title}
                                     className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500"
                                     src={product.image_url}

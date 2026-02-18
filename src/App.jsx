@@ -15,36 +15,42 @@ import { ThemeProvider } from './context/ThemeContext';
 import { LanguageProvider } from './context/LanguageContext';
 import { SettingsProvider } from './context/SettingsContext';
 import './App.css';
+import { AnimatePresence } from 'framer-motion';
+import PageTransition from './components/PageTransition';
 
 function AppLayout() {
   const location = useLocation();
   const isAdminRoute = location.pathname.startsWith('/admin');
 
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="flex flex-col min-h-screen bg-white dark:bg-black transition-colors duration-300">
       {!isAdminRoute && <Navbar />}
       <main className="flex-grow">
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/products" element={<Products />} />
-          <Route path="/products/:id" element={<ProductDetails />} />
-          <Route path="/projects" element={<Projects />} />
-          <Route path="/contact" element={<Contact />} />
-          <Route path="/admin-login" element={<AdminLogin />} />
-          <Route
-            path="/admin"
-            element={
-              <ProtectedRoute>
-                <AdminDashboard />
-              </ProtectedRoute>
-            }
-          />
-        </Routes>
+        <AnimatePresence mode="wait">
+          <Routes location={location} key={location.pathname}>
+            <Route path="/" element={<PageTransition><Home /></PageTransition>} />
+            <Route path="/products" element={<PageTransition><Products /></PageTransition>} />
+            <Route path="/products/:id" element={<PageTransition><ProductDetails /></PageTransition>} />
+            <Route path="/projects" element={<PageTransition><Projects /></PageTransition>} />
+            <Route path="/contact" element={<PageTransition><Contact /></PageTransition>} />
+            <Route path="/admin-login" element={<PageTransition><AdminLogin /></PageTransition>} />
+            <Route
+              path="/admin"
+              element={
+                <ProtectedRoute>
+                  <PageTransition><AdminDashboard /></PageTransition>
+                </ProtectedRoute>
+              }
+            />
+          </Routes>
+        </AnimatePresence>
       </main>
       {!isAdminRoute && <Footer />}
     </div>
   );
 }
+
+import ScrollToTop from './components/ScrollToTop';
 
 export default function App() {
   return (
@@ -54,6 +60,7 @@ export default function App() {
           <PostsProvider>
             <SettingsProvider>
               <Router>
+                <ScrollToTop />
                 <AppLayout />
               </Router>
             </SettingsProvider>
