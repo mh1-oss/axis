@@ -24,27 +24,27 @@ export default function Home() {
                     />
                     <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/50 to-black/60" />
                 </div>
-                <div className="relative z-10 text-center px-4 max-w-5xl mx-auto safe-padding-x">
+                <div className="relative z-10 text-center px-6 sm:px-8 max-w-5xl mx-auto safe-padding-x">
                     <h2 className="text-primary font-bold tracking-[0.2em] uppercase text-sm md:text-lg mb-4">
                         Axis Aluminum
                     </h2>
-                    <h1 className="text-5xl md:text-7xl lg:text-8xl font-display font-bold text-white uppercase tracking-tight leading-none mb-6">
+                    <h1 className="text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-display font-bold text-white uppercase tracking-tight leading-none mb-6">
                         {t('heroTitle')}
                     </h1>
-                    <p className="text-gray-300 text-lg md:text-xl max-w-2xl mx-auto mb-10 font-light leading-relaxed">
+                    <p className="text-gray-300 text-base sm:text-lg md:text-xl max-w-2xl mx-auto mb-10 font-light leading-relaxed">
                         {t('heroSubtitle')}
                     </p>
-                    <div className="flex flex-col sm:flex-row justify-center gap-4">
+                    <div className="flex flex-col sm:flex-row justify-center items-center gap-3 sm:gap-4 max-w-xs sm:max-w-none mx-auto">
                         <Link
                             to="/projects"
-                            className="bg-primary hover:bg-red-700 text-white px-8 py-4 rounded-sm font-bold uppercase tracking-widest text-sm transition-all shadow-xl hover:shadow-2xl flex items-center justify-center group"
+                            className="w-full sm:w-auto bg-primary hover:bg-red-700 text-white px-8 py-3.5 sm:py-4 rounded-sm font-bold uppercase tracking-wider sm:tracking-widest text-sm transition-all shadow-xl hover:shadow-2xl flex items-center justify-center group"
                         >
                             {t('explore')}
-                            <span className="material-icons-outlined ml-2 group-hover:translate-x-1 transition-transform rtl:group-hover:-translate-x-1 rtl:rotate-180">arrow_forward</span>
+                            <span className="material-icons-outlined ml-2 text-lg sm:text-xl group-hover:translate-x-1 transition-transform rtl:group-hover:-translate-x-1 rtl:rotate-180">arrow_forward</span>
                         </Link>
                         <Link
                             to="/products"
-                            className="border-2 border-white hover:bg-white hover:text-black text-white px-8 py-4 rounded-sm font-bold uppercase tracking-widest text-sm transition-all flex items-center justify-center"
+                            className="w-full sm:w-auto border-2 border-white hover:bg-white hover:text-black text-white px-8 py-3.5 sm:py-4 rounded-sm font-bold uppercase tracking-wider sm:tracking-widest text-sm transition-all flex items-center justify-center"
                         >
                             {t('catalog')}
                         </Link>
