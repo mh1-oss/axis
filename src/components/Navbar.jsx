@@ -39,14 +39,14 @@ export default function Navbar() {
                             </span>
                             <span className="text-black dark:text-white">AXIS</span>
                         </div>
-                        <span className="hidden md:block h-6 w-px bg-gray-300 dark:bg-gray-700" />
-                        <span className="hidden md:block text-[0.6rem] tracking-[0.2em] uppercase font-medium text-gray-500 dark:text-gray-400 leading-none">
+                        <span className="hidden lg:block h-6 w-px bg-gray-300 dark:bg-gray-700" />
+                        <span className="hidden lg:block text-[0.6rem] tracking-[0.2em] uppercase font-medium text-gray-500 dark:text-gray-400 leading-none">
                             Beyond The Frame
                         </span>
                     </Link>
 
                     {/* Desktop Nav */}
-                    <div className="hidden md:flex items-center space-x-8">
+                    <div className="hidden lg:flex items-center space-x-8">
                         {links.map(link => (
                             <Link
                                 key={link.to}
@@ -62,7 +62,7 @@ export default function Navbar() {
                     </div>
 
                     {/* Desktop Actions */}
-                    <div className="hidden md:flex items-center space-x-2 rtl:space-x-reverse">
+                    <div className="hidden lg:flex items-center space-x-2 rtl:space-x-reverse">
                         <button
                             onClick={toggleLanguage}
                             className="w-10 h-10 flex items-center justify-center rounded-full text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-800 transition-all font-bold text-sm uppercase"
@@ -89,7 +89,7 @@ export default function Navbar() {
                     </div>
 
                     {/* Mobile Menu Button */}
-                    <div className="md:hidden flex items-center gap-2">
+                    <div className="lg:hidden flex items-center gap-2">
                         <button
                             onClick={toggleLanguage}
                             className="w-10 h-10 flex items-center justify-center rounded-full text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-800 transition-all font-bold text-sm uppercase"
@@ -123,7 +123,7 @@ export default function Navbar() {
                         initial={{ opacity: 0, height: 0 }}
                         animate={{ opacity: 1, height: 'auto' }}
                         exit={{ opacity: 0, height: 0 }}
-                        className="md:hidden fixed inset-x-0 top-20 bg-surface-light dark:bg-surface-dark border-t border-border-light dark:border-border-dark shadow-xl z-40 overflow-hidden max-h-[calc(100vh-5rem)] overflow-y-auto"
+                        className="lg:hidden fixed inset-x-0 top-20 bg-surface-light dark:bg-surface-dark border-t border-border-light dark:border-border-dark shadow-xl z-40 overflow-hidden max-h-[calc(100vh-5rem)] overflow-y-auto"
                     >
                         <div className="px-4 py-4 space-y-1">
                             {links.map(link => (
