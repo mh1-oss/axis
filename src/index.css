@@ -6,7 +6,6 @@
 html {
   background-color: #F8F9FA;
   scroll-behavior: smooth;
-  overflow-x: hidden;
 }
 
 html.dark {
@@ -16,12 +15,10 @@ html.dark {
 body {
   height: 100%;
   min-height: 100vh;
-  overflow-x: hidden;
 }
 
 #root {
   height: 100%;
-  overflow-x: hidden;
 }
 
 @theme {

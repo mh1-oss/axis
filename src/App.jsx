@@ -23,7 +23,7 @@ function AppLayout() {
   const isAdminRoute = location.pathname.startsWith('/admin');
 
   return (
-    <div className="flex flex-col min-h-screen bg-white dark:bg-black transition-colors duration-300 w-full overflow-x-hidden">
+    <div className="flex flex-col min-h-screen bg-white dark:bg-black transition-colors duration-300 w-full">
       {!isAdminRoute && <Navbar />}
       <main className="flex-grow">
         <AnimatePresence mode="wait">
