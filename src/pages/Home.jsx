@@ -1,8 +1,16 @@
 import { Link } from 'react-router-dom';
 import { useLanguage } from '../context/LanguageContext';
+import { usePosts } from '../context/PostsContext';
 
 export default function Home() {
     const { t } = useLanguage();
+    const { projects } = usePosts();
+
+    const featuredProject = projects.find(p => p.is_featured) || projects[0] || {
+        title: 'The Onyx Tower',
+        description: 'Featuring 40,000 sq. ft. of our signature Series-X curtain wall system and bespoke aluminum louvers.',
+        image_url: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCCTpJo_4yfYkr2wMpelVC0tu16e6piqA_JXL9H7Dxpo6ZLFlPNmorO3Etm0fClTtFZVvjTc-1aJ9L0ogPhOqevj_CnSLUcbXjrsWAff6EOmQ_noqf5Cl_hDJwMMwgX-8fKxBuZYacXgAiznmpOzqWENzwmEgEwDsvEFLWzMRO3wRhRWVUs2-RUHWZQBeUjhH32RZg_uyoQKbMiyhRhd4xxVB2uFiBqcLI8FuQiv55T1t7pPDYLjVRRqO5CpjdvZF8lvQUNWHAcvEft'
+    };
 
     return (
         <div className="bg-background-light dark:bg-background-dark text-gray-900 dark:text-gray-100 transition-colors duration-300">
@@ -12,7 +20,7 @@ export default function Home() {
                     <img
                         alt="Modern corporate building with sleek aluminum facade"
                         className="w-full h-full object-cover"
-                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuA1BUX7LDPmdJkcBSzbnFDJpXn9_aJj4ne7LfKLP0oEQz6ayP1yhjS9HUS1VnjEADcPsAxfK_8qq7kp4Eq0U46oKFKe1KkfHgT6Jso6cssRRJVHUrnOu6obVtmvA9384FMVSdacpBIUZHe3ozZlXxp65lO6vJaAbrhN1Y6VIQk7zr73JF60-11jCG2LXkrbKGgdge65a8Xifv3ottVhE5G_JN_t_ZUGCsHLgmUQG2j3UufyElngOiZ9_HbXYv2U27f_pjgFr390R2dn"
+                        src={featuredProject.image_url}
                     />
                     <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/50 to-black/60" />
                 </div>
@@ -89,14 +97,14 @@ export default function Home() {
                         <img
                             alt="Detail of aluminum cladding"
                             className="absolute inset-0 w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-700"
-                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuCCTpJo_4yfYkr2wMpelVC0tu16e6piqA_JXL9H7Dxpo6ZLFlPNmorO3Etm0fClTtFZVvjTc-1aJ9L0ogPhOqevj_CnSLUcbXjrsWAff6EOmQ_noqf5Cl_hDJwMMwgX-8fKxBuZYacXgAiznmpOzqWENzwmEgEwDsvEFLWzMRO3wRhRWVUs2-RUHWZQBeUjhH32RZg_uyoQKbMiyhRhd4xxVB2uFiBqcLI8FuQiv55T1t7pPDYLjVRRqO5CpjdvZF8lvQUNWHAcvEft"
+                            src={featuredProject.image_url}
                         />
                     </div>
                     <div className="p-12 md:p-24 flex flex-col justify-center items-start">
                         <span className="text-primary font-bold tracking-widest uppercase text-xs mb-4">{t('latestProject')}</span>
-                        <h3 className="text-3xl md:text-4xl font-display font-bold text-white uppercase mb-6">The Onyx Tower</h3>
+                        <h3 className="text-3xl md:text-4xl font-display font-bold text-white uppercase mb-6">{featuredProject.title}</h3>
                         <p className="text-gray-400 mb-8 max-w-md">
-                            Featuring 40,000 sq. ft. of our signature Series-X curtain wall system and bespoke aluminum louvers.
+                            {featuredProject.description}
                         </p>
                         <Link to="/projects" className="text-white border-b border-primary pb-1 hover:text-primary transition-colors uppercase tracking-widest text-sm font-semibold">
                             {t('viewCaseStudy')}

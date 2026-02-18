@@ -13,6 +13,7 @@ import AdminLogin from './pages/AdminLogin';
 import AdminDashboard from './pages/AdminDashboard';
 import { ThemeProvider } from './context/ThemeContext';
 import { LanguageProvider } from './context/LanguageContext';
+import { SettingsProvider } from './context/SettingsContext';
 import './App.css';
 
 function AppLayout() {
@@ -51,9 +52,11 @@ export default function App() {
       <LanguageProvider>
         <AuthProvider>
           <PostsProvider>
-            <Router>
-              <AppLayout />
-            </Router>
+            <SettingsProvider>
+              <Router>
+                <AppLayout />
+              </Router>
+            </SettingsProvider>
           </PostsProvider>
         </AuthProvider>
       </LanguageProvider>

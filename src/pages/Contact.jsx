@@ -1,9 +1,12 @@
 import { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import { useLanguage } from '../context/LanguageContext';
+import { useSettings } from '../context/SettingsContext';
+import { supabase } from '../supabase';
 
 export default function Contact() {
     const { t } = useLanguage();
+    const { settings } = useSettings();
     const location = useLocation();
     const [formData, setFormData] = useState({
         name: '', email: '', subject: 'General Inquiry', message: ''
@@ -20,11 +23,29 @@ export default function Contact() {
         }
     }, [location.state]);
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        setSubmitted(true);
-        setTimeout(() => setSubmitted(false), 3000);
-        setFormData({ name: '', email: '', subject: 'General Inquiry', message: '' });
+        try {
+            const { error } = await supabase
+                .from('messages')
+                .insert([
+                    {
+                        name: formData.name,
+                        email: formData.email,
+                        subject: formData.subject,
+                        message: formData.message
+                    }
+                ]);
+
+            if (error) throw error;
+
+            setSubmitted(true);
+            setTimeout(() => setSubmitted(false), 5000);
+            setFormData({ name: '', email: '', subject: 'General Inquiry', message: '' });
+        } catch (error) {
+            console.error('Error sending message:', error.message);
+            alert('Error sending message. Please try again.');
+        }
     };
 
     return (
@@ -168,9 +189,7 @@ export default function Contact() {
                                 <div>
                                     <h4 className="text-lg font-display font-medium text-secondary dark:text-white">{t('office')}</h4>
                                     <p className="mt-2 text-sm text-gray-500 dark:text-gray-400">
-                                        123 Industrial Blvd,<br />
-                                        Building B, Suite 100<br />
-                                        Metropolitan City, ST 12345
+                                        {settings?.address || '123 Industrial Blvd, Metropolitan City, ST 12345'}
                                     </p>
                                 </div>
                             </div>
@@ -181,8 +200,7 @@ export default function Contact() {
                                 <div>
                                     <h4 className="text-lg font-display font-medium text-secondary dark:text-white">{t('phoneFax')}</h4>
                                     <p className="mt-2 text-sm text-gray-500 dark:text-gray-400">
-                                        <span className="block mb-1">P: (555) 123-4567</span>
-                                        <span className="block">F: (555) 987-6543</span>
+                                        <span className="block mb-1">{settings?.phone || 'P: (555) 123-4567'}</span>
                                     </p>
                                 </div>
                             </div>
@@ -193,9 +211,7 @@ export default function Contact() {
                                 <div>
                                     <h4 className="text-lg font-display font-medium text-secondary dark:text-white">{t('email')}</h4>
                                     <p className="mt-2 text-sm text-gray-500 dark:text-gray-400">
-                                        <a className="hover:text-primary transition-colors" href="mailto:info@axisaluminum.com">info@axisaluminum.com</a>
-                                        <span className="mx-2 text-gray-300">|</span>
-                                        <a className="hover:text-primary transition-colors" href="mailto:sales@axisaluminum.com">sales@axisaluminum.com</a>
+                                        <a className="hover:text-primary transition-colors" href={`mailto:${settings?.email || 'info@axisaluminum.com'}`}>{settings?.email || 'info@axisaluminum.com'}</a>
                                     </p>
                                 </div>
                             </div>
@@ -205,7 +221,7 @@ export default function Contact() {
                                 allowFullScreen
                                 className="absolute inset-0 w-full h-full border-0 grayscale hover:grayscale-0 transition-all duration-500"
                                 loading="lazy"
-                                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3022.1837920360675!2d-73.9877316845941!3d40.74844454348528!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c259a9b3117469%3A0xd134e199a405a163!2sEmpire%20State%20Building!5e0!3m2!1sen!2sus!4v1620668474261!5m2!1sen!2sus"
+                                src={settings?.map_url || "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3022.1837920360675!2d-73.9877316845941!3d40.74844454348528!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c259a9b3117469%3A0xd134e199a405a163!2sEmpire%20State%20Building!5e0!3m2!1sen!2sus!4v1620668474261!5m2!1sen!2sus"}
                                 title="Office Location"
                             />
                         </div>
