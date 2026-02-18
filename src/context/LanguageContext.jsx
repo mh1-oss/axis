@@ -110,7 +110,7 @@ export function LanguageProvider({ children }) {
                 products: 'المنتجات',
                 projects: 'المشاريع',
                 contact: 'اتصل بنا',
-                getQuote: 'اطلب عرض سعر',
+                getQuote: 'أحصل على عرض',
                 admin: 'أدمن',
                 heroTitle: 'ما وراء الإطار',
                 heroSubtitle: 'الهندسة الدقيقة تلتقي بالرؤية المعمارية. نصنع واجهات ألمنيوم متميزة تعيد تعريف الأفق الحديث.',

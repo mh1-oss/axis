@@ -81,7 +81,7 @@ export default function Navbar() {
                             to="/contact"
                             className="bg-primary hover:bg-red-700 text-white px-6 py-2.5 rounded-sm font-bold uppercase tracking-wider text-sm transition-all transform hover:-translate-y-0.5 shadow-lg shadow-red-500/30"
                         >
-                            Get a Quote
+                            {t('getQuote')}
                         </Link>
                     </div>
 
