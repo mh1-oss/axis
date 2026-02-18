@@ -32,6 +32,12 @@ body,
 body {
   font-family: 'Montserrat', sans-serif;
   transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out;
+  background-color: var(--color-background-light);
+  min-height: 100vh;
+}
+
+.dark body {
+  background-color: var(--color-background-dark);
 }
 
 h1,
