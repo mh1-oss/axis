@@ -73,7 +73,7 @@ export default function Footer() {
                             </li>
                             <li className="flex items-center">
                                 <span className="material-icons-outlined text-primary mr-2 text-base">email</span>
-                                <span>{settings?.email || 'info@axisaluminum.com'}</span>
+                                <span className="break-all">{settings?.email || 'info@axisaluminum.com'}</span>
                             </li>
                         </ul>
                     </div>
