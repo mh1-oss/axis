@@ -97,7 +97,7 @@ export default function ProductDetails() {
                             </div>
                         </div>
 
-                        <div className="flex gap-4">
+                        <div className="flex flex-col sm:flex-row gap-4">
                             <button
                                 onClick={handleInquire}
                                 className="flex-1 bg-primary hover:bg-red-700 text-white px-8 py-4 rounded-md font-bold uppercase tracking-wider text-sm transition-all shadow-lg hover:shadow-red-500/30 flex items-center justify-center gap-2"
