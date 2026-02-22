@@ -39,6 +39,33 @@ body {
   --font-body: 'Roboto', sans-serif;
 }
 
+/* Accounting System Isolated Theme */
+.accounting-theme {
+  --color-gray-50: #f8fafc;
+  --color-gray-100: #f1f5f9;
+  --color-gray-200: #e2e8f0;
+  --color-gray-300: #cbd5e1;
+  --color-gray-400: #94a3b8;
+  --color-gray-500: #64748b;
+  --color-gray-600: #475569;
+  --color-gray-700: #334155;
+  --color-gray-800: #1e293b;
+  --color-gray-900: #0f172a;
+}
+
+.dark .accounting-theme {
+  --color-gray-900: #0f172a;
+  /* Slate 900 for main bg */
+  --color-gray-800: #1e293b;
+  /* Slate 800 for cards */
+  --color-gray-700: #334155;
+  /* Slate 700 for borders/dividers */
+  --color-background-dark: #0f172a;
+  --color-surface-dark: #1e293b;
+  --color-card-dark: #1e293b;
+  --color-border-dark: #334155;
+}
+
 /* Base styles */
 body {
   font-family: 'Montserrat', sans-serif;
@@ -118,4 +145,23 @@ h6 {
   margin-left: env(safe-area-inset-left);
   margin-right: constant(safe-area-inset-right);
   margin-right: env(safe-area-inset-right);
+}
+
+/* Print styles — clean single-page output */
+@media print {
+
+  html,
+  body,
+  #root {
+    background: white !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    min-height: auto !important;
+    height: auto !important;
+  }
+
+  @page {
+    margin: 8mm;
+    size: A4;
+  }
 }

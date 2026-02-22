@@ -1,24 +1,16 @@
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { usePosts } from '../context/PostsContext';
 import { useLanguage } from '../context/LanguageContext';
-import { useEffect, useState } from 'react';
-import { motion } from 'framer-motion';
 
 export default function ProductDetails() {
     const { id } = useParams();
     const navigate = useNavigate();
     const { products } = usePosts();
     const { t, language } = useLanguage();
-    const [product, setProduct] = useState(null);
-    const [loading, setLoading] = useState(true);
 
-    useEffect(() => {
-        if (products.length > 0) {
-            const found = products.find(p => p.id === id);
-            setProduct(found);
-            setLoading(false);
-        }
-    }, [id, products]);
+    // Derive state to avoid cascading renders
+    const loading = products.length === 0;
+    const product = products.find(p => p.id === id) || null;
 
     const handleInquire = () => {
         navigate('/contact', { state: { product: product?.title } });

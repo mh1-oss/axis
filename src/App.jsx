@@ -11,6 +11,12 @@ import Projects from './pages/Projects';
 import Contact from './pages/Contact';
 import AdminLogin from './pages/AdminLogin';
 import AdminDashboard from './pages/AdminDashboard';
+import AccountingLayout from './pages/admin/AccountingLayout';
+import Inventory from './pages/admin/Inventory';
+import Quotes from './pages/admin/Quotes';
+import QuoteEditor from './pages/admin/QuoteEditor';
+import Reports from './pages/admin/Reports';
+import PrintSettings from './pages/admin/PrintSettings';
 import { ThemeProvider } from './context/ThemeContext';
 import { LanguageProvider } from './context/LanguageContext';
 import { SettingsProvider } from './context/SettingsContext';
@@ -42,6 +48,22 @@ function AppLayout() {
                 </ProtectedRoute>
               }
             />
+            <Route
+              path="/admin/accounting"
+              element={
+                <ProtectedRoute>
+                  <AccountingLayout />
+                </ProtectedRoute>
+              }
+            >
+              <Route index element={<Inventory />} /> {/* Default to inventory for now */}
+              <Route path="inventory" element={<Inventory />} />
+              <Route path="quotes" element={<Quotes />} />
+              <Route path="quotes/new" element={<QuoteEditor />} />
+              <Route path="quotes/:id" element={<QuoteEditor />} />
+              <Route path="reports" element={<Reports />} />
+              <Route path="settings" element={<PrintSettings />} />
+            </Route>
           </Routes>
         </AnimatePresence>
       </main>

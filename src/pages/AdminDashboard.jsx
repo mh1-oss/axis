@@ -1,9 +1,9 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { usePosts } from '../context/PostsContext';
 import { useSettings } from '../context/SettingsContext';
-
 import { supabase } from '../supabase';
 
 const EMPTY_PROJECT = { title: '', category: 'Commercial', location: '', image_url: '', description: '', catalog_url: '', is_featured: false };
@@ -19,7 +19,7 @@ export default function AdminDashboard() {
     const { settings, updateSettings } = useSettings();
 
     const [activeTab, setActiveTab] = useState('projects');
-    const [inboxTab, setInboxTab] = useState('active'); // 'active' or 'replied'
+    const [inboxTab, setInboxTab] = useState('active');
     const [editingId, setEditingId] = useState(null);
     const [formData, setFormData] = useState(EMPTY_PROJECT);
     const [settingsData, setSettingsData] = useState(settings);
@@ -32,15 +32,15 @@ export default function AdminDashboard() {
     const isInbox = activeTab === 'inbox';
     const items = isProjects ? projects : products;
 
-    useEffect(() => {
-        if (activeTab === 'inbox') {
-            fetchMessages();
-        }
-        // Auto-delete check on load/settings change
-        if (settings?.auto_delete_days > 0) {
-            handleAutoDelete();
-        }
-    }, [activeTab, settings]);
+    const fetchMessages = async () => {
+        const { data, error } = await supabase
+            .from('messages')
+            .select('*')
+            .order('created_at', { ascending: false });
+
+        if (error) console.error('Error fetching messages:', error);
+        else setMessages(data || []);
+    };
 
     const handleAutoDelete = async () => {
         const days = parseInt(settings.auto_delete_days);
@@ -62,15 +62,14 @@ export default function AdminDashboard() {
         }
     };
 
-    const fetchMessages = async () => {
-        const { data, error } = await supabase
-            .from('messages')
-            .select('*')
-            .order('created_at', { ascending: false });
-
-        if (error) console.error('Error fetching messages:', error);
-        else setMessages(data || []);
-    };
+    useEffect(() => {
+        if (activeTab === 'inbox') {
+            fetchMessages();
+        }
+        if (settings?.auto_delete_days > 0) {
+            handleAutoDelete();
+        }
+    }, [activeTab, settings]);
 
     const handleDeleteMessage = async (id) => {
         const { error } = await supabase.from('messages').delete().eq('id', id);
@@ -79,10 +78,8 @@ export default function AdminDashboard() {
     };
 
     const handleMarkReplied = async (msg) => {
-        // Open email client
-        window.location.href = `mailto:${msg.email}?subject=Re: ${msg.subject}&body=Hi ${msg.name},\n\nRegarding your message:\n"${msg.message}"\n\n`;
+        window.location.assign(`mailto:${msg.email}?subject=Re: ${msg.subject}&body=Hi ${msg.name},\n\nRegarding your message:\n"${msg.message}"\n\n`);
 
-        // Update DB
         const { error } = await supabase
             .from('messages')
             .update({ replied: true, replied_at: new Date().toISOString() })
@@ -104,12 +101,10 @@ export default function AdminDashboard() {
         }
     };
 
-    // Filter messages
     const activeMessages = messages.filter(m => !m.replied);
     const repliedMessages = messages.filter(m => m.replied);
     const displayedMessages = inboxTab === 'active' ? activeMessages : repliedMessages;
 
-    // Sync settings data
     useEffect(() => {
         if (settings) setSettingsData(settings);
     }, [settings]);
@@ -183,17 +178,22 @@ export default function AdminDashboard() {
 
     return (
         <div className="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors">
-            {/* Admin Header */}
+            {/* ====== HEADER ====== */}
             <header className="bg-white dark:bg-gray-800 shadow-sm border-b border-gray-200 dark:border-gray-700 sticky top-0 z-30">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex flex-col sm:flex-row items-center justify-between gap-4">
                     <div className="flex items-center gap-4">
-                        <div className="flex items-center gap-2">
-                            <span className="text-xl font-display font-bold text-gray-900 dark:text-white uppercase tracking-tighter">AXIS</span>
-                        </div>
+                        <span className="text-xl font-display font-bold text-gray-900 dark:text-white uppercase tracking-tighter">AXIS</span>
                         <span className="h-6 w-px bg-gray-300 dark:bg-gray-600" />
                         <span className="text-sm font-medium text-gray-500 dark:text-gray-400">Admin Dashboard</span>
                     </div>
-                    <div className="flex items-center gap-4 w-full sm:w-auto justify-end">
+                    <div className="flex items-center space-x-4">
+                        <Link
+                            to="/admin/accounting"
+                            className="flex items-center gap-2 bg-secondary hover:bg-black text-white px-3 sm:px-4 py-2 rounded-md transition-colors shadow-md"
+                        >
+                            <span className="material-icons-outlined">calculate</span>
+                            <span className="hidden lg:inline">Accounting</span>
+                        </Link>
                         <button
                             onClick={() => navigate('/')}
                             className="text-sm text-gray-600 dark:text-gray-300 hover:text-primary transition-colors flex items-center gap-1"
@@ -212,8 +212,10 @@ export default function AdminDashboard() {
                 </div>
             </header>
 
+            {/* ====== MAIN CONTENT ====== */}
             <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-                {/* Tabs */}
+
+                {/* --- Tab Bar --- */}
                 <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 mb-8">
                     <div className="flex flex-wrap bg-white dark:bg-gray-800 rounded-lg p-1 border border-gray-200 dark:border-gray-700 shadow-sm w-full sm:w-auto">
                         <button onClick={() => handleTabSwitch('projects')} className={`flex-1 sm:flex-none px-4 py-2.5 rounded-md text-sm font-medium transition-all ${isProjects ? 'bg-primary text-white shadow-sm' : 'text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white'}`}>
@@ -242,7 +244,7 @@ export default function AdminDashboard() {
                     )}
                 </div>
 
-                {/* Settings Form */}
+                {/* --- Settings Tab --- */}
                 {isSettings && (
                     <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm p-6">
                         <h3 className="text-xl font-display font-bold text-gray-900 dark:text-white mb-6">Site Settings</h3>
@@ -304,7 +306,7 @@ export default function AdminDashboard() {
                     </div>
                 )}
 
-                {/* Inbox List */}
+                {/* --- Inbox Tab --- */}
                 {isInbox && (
                     <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm overflow-hidden">
                         <div className="flex items-center gap-6 p-4 border-b border-gray-200 dark:border-gray-700">
@@ -325,7 +327,7 @@ export default function AdminDashboard() {
                                 <button
                                     onClick={async () => {
                                         if (confirm(`Delete all ${inboxTab} messages? This cannot be undone.`)) {
-                                            const { error } = await supabase.from('messages').delete().eq('replied', inboxTab === 'replied'); // Delete based on active filter
+                                            const { error } = await supabase.from('messages').delete().eq('replied', inboxTab === 'replied');
                                             if (!error) setMessages(prev => prev.filter(m => m.replied !== (inboxTab === 'replied')));
                                             else alert('Error deleting messages');
                                         }
@@ -409,7 +411,7 @@ export default function AdminDashboard() {
                     </div>
                 )}
 
-                {/* Add/Edit Form */}
+                {/* --- Add/Edit Form --- */}
                 {((!isSettings && !isInbox) && showForm) && (
                     <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 shadow-lg p-6 mb-8">
                         <div className="flex items-center justify-between mb-6">
@@ -520,7 +522,7 @@ export default function AdminDashboard() {
                     </div>
                 )}
 
-                {/* Items List */}
+                {/* --- Items Table --- */}
                 {(!isSettings && !isInbox) && (
                     <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm overflow-hidden">
                         <div className="overflow-x-auto">
@@ -613,6 +615,7 @@ export default function AdminDashboard() {
                         )}
                     </div>
                 )}
+
             </main>
         </div>
     );

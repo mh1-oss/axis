@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { usePosts } from '../context/PostsContext';
 import { useLanguage } from '../context/LanguageContext';
+// eslint-disable-next-line no-unused-vars
 import { motion } from 'framer-motion';
 
 export default function Products() {
