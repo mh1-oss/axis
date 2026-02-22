@@ -1,6 +1,8 @@
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { usePosts } from '../context/PostsContext';
 import { useLanguage } from '../context/LanguageContext';
+// eslint-disable-next-line no-unused-vars
+import { motion } from 'framer-motion';
 
 export default function ProductDetails() {
     const { id } = useParams();

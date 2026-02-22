@@ -69,7 +69,7 @@ export default function Projects() {
                                 className="w-full h-full object-cover transform transition-transform duration-700 group-hover:scale-110"
                                 src={project.image_url}
                             />
-                            <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex flex-col justify-end p-6">
+                            <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent opacity-100 lg:opacity-0 lg:group-hover:opacity-100 transition-opacity duration-500 flex flex-col justify-end p-6">
                                 <span className="text-primary text-xs font-bold uppercase tracking-wider mb-1">{project.category}</span>
                                 <h3 className="text-white font-display text-2xl font-bold uppercase">{project.title}</h3>
                                 <p className="text-gray-300 text-sm mt-1 flex items-center">
