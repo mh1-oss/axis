@@ -1,5 +1,5 @@
-/* eslint-disable react-refresh/only-export-components */
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useSettings } from '../../context/SettingsContext';
 
 const DEFAULT_SETTINGS = {
     company_name: 'AXIS',
@@ -13,35 +13,46 @@ const DEFAULT_SETTINGS = {
     currency_symbol: '$',
 };
 
-export function getPrintSettings() {
-    try {
-        const saved = localStorage.getItem('print_settings');
-        return saved ? { ...DEFAULT_SETTINGS, ...JSON.parse(saved) } : DEFAULT_SETTINGS;
-    } catch {
-        return DEFAULT_SETTINGS;
-    }
-}
-
 export default function PrintSettings() {
-    const [settings, setSettings] = useState(() => getPrintSettings());
+    const { settings, updateSettings, loading } = useSettings();
+    const [localSettings, setLocalSettings] = useState(DEFAULT_SETTINGS);
     const [saved, setSaved] = useState(false);
+    const [saving, setSaving] = useState(false);
+
+    useEffect(() => {
+        if (settings && !loading) {
+            // eslint-disable-next-line react-hooks/set-state-in-effect
+            setLocalSettings({ ...DEFAULT_SETTINGS, ...settings });
+        }
+    }, [settings, loading]);
 
     const handleChange = (key, value) => {
-        setSettings(prev => ({ ...prev, [key]: value }));
+        setLocalSettings(prev => ({ ...prev, [key]: value }));
         setSaved(false);
     };
 
-    const handleSave = () => {
-        localStorage.setItem('print_settings', JSON.stringify(settings));
-        setSaved(true);
-        setTimeout(() => setSaved(false), 2000);
+    const handleSave = async () => {
+        setSaving(true);
+        const { success } = await updateSettings(localSettings);
+        setSaving(false);
+        if (success) {
+            setSaved(true);
+            setTimeout(() => setSaved(false), 2000);
+        } else {
+            alert('Error saving print settings.');
+        }
     };
 
     const handleReset = () => {
-        setSettings(DEFAULT_SETTINGS);
-        localStorage.removeItem('print_settings');
-        setSaved(false);
+        if (window.confirm('Are you sure you want to reset all print settings to default?')) {
+            setLocalSettings(DEFAULT_SETTINGS);
+            setSaved(false);
+        }
     };
+
+    if (loading) {
+        return <div className="p-8 text-center text-gray-500">Loading settings...</div>;
+    }
 
     const inputClass = "w-full px-3 py-2.5 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-black/20 text-gray-900 dark:text-white text-sm focus:ring-2 focus:ring-primary focus:border-transparent";
     const labelClass = "block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1";
@@ -63,7 +74,8 @@ export default function PrintSettings() {
                     </button>
                     <button
                         onClick={handleSave}
-                        className="px-4 py-2.5 bg-primary text-white rounded-lg hover:bg-red-700 text-sm font-medium transition-colors shadow-sm flex items-center gap-2"
+                        disabled={saving}
+                        className="px-4 py-2.5 bg-primary text-white rounded-lg hover:bg-red-700 text-sm font-medium transition-colors shadow-sm flex items-center gap-2 disabled:opacity-50"
                     >
                         <span className="material-icons-outlined text-lg">{saved ? 'check' : 'save'}</span>
                         {saved ? 'Saved!' : 'Save Settings'}
@@ -80,19 +92,19 @@ export default function PrintSettings() {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                     <div>
                         <label className={labelClass}>Company Name</label>
-                        <input className={inputClass} value={settings.company_name} onChange={e => handleChange('company_name', e.target.value)} placeholder="Your Company" />
+                        <input className={inputClass} value={localSettings.company_name} onChange={e => handleChange('company_name', e.target.value)} placeholder="Your Company" />
                     </div>
                     <div>
                         <label className={labelClass}>Tagline / Subtitle</label>
-                        <input className={inputClass} value={settings.company_tagline} onChange={e => handleChange('company_tagline', e.target.value)} placeholder="What you do" />
+                        <input className={inputClass} value={localSettings.company_tagline} onChange={e => handleChange('company_tagline', e.target.value)} placeholder="What you do" />
                     </div>
                     <div>
                         <label className={labelClass}>Website URL</label>
-                        <input className={inputClass} value={settings.website_url} onChange={e => handleChange('website_url', e.target.value)} placeholder="www.yourcompany.com" />
+                        <input className={inputClass} value={localSettings.website_url} onChange={e => handleChange('website_url', e.target.value)} placeholder="www.yourcompany.com" />
                     </div>
                     <div>
                         <label className={labelClass}>Exchange Rate (IQD per USD)</label>
-                        <input type="number" className={inputClass} value={settings.exchange_rate} onChange={e => handleChange('exchange_rate', Number(e.target.value))} placeholder="1500" />
+                        <input type="number" className={inputClass} value={localSettings.exchange_rate} onChange={e => handleChange('exchange_rate', Number(e.target.value))} placeholder="1500" />
                     </div>
                 </div>
             </div>
@@ -105,7 +117,7 @@ export default function PrintSettings() {
                 </h3>
                 <div>
                     <label className={labelClass}>General terms that appear on all printed quotes</label>
-                    <textarea className={`${inputClass} resize-none`} rows="4" value={settings.terms_text} onChange={e => handleChange('terms_text', e.target.value)} placeholder="e.g., Payment due within 30 days. Prices valid for 10 days. All prices are subject to change..." />
+                    <textarea className={`${inputClass} resize-none`} rows="4" value={localSettings.terms_text} onChange={e => handleChange('terms_text', e.target.value)} placeholder="e.g., Payment due within 30 days. Prices valid for 10 days. All prices are subject to change..." />
                 </div>
             </div>
 
@@ -118,18 +130,18 @@ export default function PrintSettings() {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                     <div>
                         <label className={labelClass}>Currency Symbol</label>
-                        <input className={inputClass} value={settings.currency_symbol} onChange={e => handleChange('currency_symbol', e.target.value)} placeholder="$" />
+                        <input className={inputClass} value={localSettings.currency_symbol} onChange={e => handleChange('currency_symbol', e.target.value)} placeholder="$" />
                     </div>
                     <div>
                         <label className={labelClass}>Thank You Message</label>
-                        <input className={inputClass} value={settings.thank_you_text} onChange={e => handleChange('thank_you_text', e.target.value)} placeholder="Thank you for your business!" />
+                        <input className={inputClass} value={localSettings.thank_you_text} onChange={e => handleChange('thank_you_text', e.target.value)} placeholder="Thank you for your business!" />
                     </div>
                     <div className="flex items-center gap-3 pt-2">
-                        <input type="checkbox" id="showDims" className="w-4 h-4 rounded border-gray-300 text-primary focus:ring-primary" checked={settings.show_dimensions} onChange={e => handleChange('show_dimensions', e.target.checked)} />
+                        <input type="checkbox" id="showDims" className="w-4 h-4 rounded border-gray-300 text-primary focus:ring-primary" checked={localSettings.show_dimensions} onChange={e => handleChange('show_dimensions', e.target.checked)} />
                         <label htmlFor="showDims" className="text-sm text-gray-700 dark:text-gray-300">Show dimensions (W × H) in print</label>
                     </div>
                     <div className="flex items-center gap-3 pt-2">
-                        <input type="checkbox" id="showLogo" className="w-4 h-4 rounded border-gray-300 text-primary focus:ring-primary" checked={settings.show_logo !== false} onChange={e => handleChange('show_logo', e.target.checked)} />
+                        <input type="checkbox" id="showLogo" className="w-4 h-4 rounded border-gray-300 text-primary focus:ring-primary" checked={localSettings.show_logo !== false} onChange={e => handleChange('show_logo', e.target.checked)} />
                         <label htmlFor="showLogo" className="text-sm text-gray-700 dark:text-gray-300">Show Logo in print header</label>
                     </div>
                 </div>
@@ -144,9 +156,9 @@ export default function PrintSettings() {
                 <div className="bg-white text-black p-6 rounded border border-gray-200 max-w-lg">
                     <div className="flex justify-between items-start border-b-2 border-red-600 pb-3">
                         <div>
-                            <div className="text-2xl font-bold uppercase tracking-tighter">{settings.company_name || 'COMPANY'}</div>
-                            <div className="text-xs text-gray-500">{settings.company_tagline}</div>
-                            {settings.website_url && <div className="text-[10px] text-gray-400 mt-1">{settings.website_url}</div>}
+                            <div className="text-2xl font-bold uppercase tracking-tighter">{localSettings.company_name || 'COMPANY'}</div>
+                            <div className="text-xs text-gray-500">{localSettings.company_tagline}</div>
+                            {localSettings.website_url && <div className="text-[10px] text-gray-400 mt-1">{localSettings.website_url}</div>}
                         </div>
                         <div className="text-right">
                             <div className="text-lg font-bold text-red-600">QUOTE</div>

@@ -12,7 +12,16 @@ export function SettingsProvider({ children }) {
         facebook_url: '',
         instagram_url: '',
         linkedin_url: '',
-        map_url: ''
+        map_url: '',
+        company_name: 'AXIS',
+        company_tagline: 'Aluminum & Glass Solutions',
+        website_url: '',
+        exchange_rate: 1500,
+        terms_text: '',
+        thank_you_text: 'Thank you for your business!',
+        show_dimensions: true,
+        show_logo: true,
+        currency_symbol: '$'
     });
     const [loading, setLoading] = useState(true);
 

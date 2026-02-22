@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useState, useEffect } from 'react';
 import { supabase } from '../../supabase';
-import { getPrintSettings } from './PrintSettings';
+import { useSettings } from '../../context/SettingsContext';
 
 const EXPENSE_CATEGORIES = [
     { value: 'salary', label: 'Salary / رواتب', icon: 'badge' },
@@ -28,7 +28,7 @@ export default function Reports() {
         expense_date: new Date().toISOString().split('T')[0]
     });
 
-    const printSettings = getPrintSettings();
+    const { settings: printSettings } = useSettings();
 
     const fetchData = async () => {
         setLoading(true);

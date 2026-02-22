@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '../../supabase';
 import { useNavigate, useParams } from 'react-router-dom';
-import { getPrintSettings } from './PrintSettings';
 import { useSettings } from '../../context/SettingsContext';
 import Barcode from 'react-barcode';
 
@@ -12,7 +11,7 @@ export default function QuoteEditor() {
     const [loading, setLoading] = useState(false);
     const [saving, setSaving] = useState(false);
     const [materials, setMaterials] = useState([]);
-    const ps = getPrintSettings();
+    const ps = settings || {};
     const [discount, setDiscount] = useState(0);
     const [isItemModalOpen, setIsItemModalOpen] = useState(false);
     const [itemSearchQuery, setItemSearchQuery] = useState('');
@@ -277,7 +276,7 @@ export default function QuoteEditor() {
             {/* Editor Interface (Hidden on Print) */}
             <div className="print:hidden space-y-6">
                 {/* Header */}
-                <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 relative z-20">
                     <div className="flex items-center gap-3">
                         <button
                             onClick={() => navigate('/admin/accounting/quotes')}
